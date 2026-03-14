@@ -26,30 +26,42 @@ def _make_kernel(config: helion.Config):
         acc_dtype = torch.float32
         dtype = k.dtype
 
-        nchunks = seqlen // chunk_size
+        nchunks = (seqlen + chunk_size - 1) // chunk_size
         h_out = torch.empty(batch, nchunks, nheads, dhead, dstate, dtype=dtype, device=k.device)
         block_v = hl.register_block_size(dstate)
 
         # EVOLVE-BLOCK-START
-        for tile_b, tile_h, tile_v in hl.tile([batch, nheads, dstate], block_size=[1, 1, block_v]):
+        for tile_b, tile_h, tile_v in hl.tile(
+            [batch, nheads, dstate], block_size=[1, 1, block_v]
+        ):
             i_b = tile_b.id
             i_h = tile_h.id
             b_h = hl.zeros([dhead, tile_v], dtype=acc_dtype)
             for t_i in hl.tile(seqlen, block_size=chunk_size):
-                b_h_store = b_h.to(dtype)
-                h_out[i_b, t_i.id, i_h, :, tile_v] = b_h_store
+                # Store h BEFORE processing this chunk
+                h_out[i_b, t_i.id, i_h, :, tile_v] = b_h.to(dtype)
+
+                # v_new = u - w @ h
                 b_w = w[i_b, t_i, i_h, :]
-                b_v = hl.dot(b_w, b_h_store, out_dtype=acc_dtype)
+                c_h = b_h.to(dtype)
+                b_v = hl.dot(b_w, c_h, out_dtype=acc_dtype)
                 p_v = u[i_b, t_i, i_h, tile_v].to(acc_dtype)
                 b_v = p_v - b_v
+
+                # Store v_new before gating
                 v_new_out[i_b, t_i, i_h, tile_v] = b_v.to(dtype)
-                t_i_last = t_i.begin + chunk_size - 1
+
+                # Gate and update h
+                m_t = t_i.index < seqlen
+                t_i_last = min(t_i.begin + chunk_size, seqlen) - 1
                 b_g_last = g[i_b, t_i_last, i_h].to(acc_dtype)
                 b_g = g[i_b, t_i, i_h].to(acc_dtype)
-                b_v *= torch.exp(b_g_last - b_g)[:, None]
-                b_h *= torch.exp(b_g_last)
+                b_v *= torch.where(m_t, torch.exp(b_g_last - b_g), 0)[:, None]
+                b_g_last = torch.exp(b_g_last)
+                b_h *= b_g_last
+                b_v = b_v.to(dtype)
                 p_k = k[i_b, t_i, i_h, :]
-                b_h = hl.dot(p_k.T, b_v.to(dtype), acc=b_h)
+                b_h = hl.dot(p_k.T, b_v, acc=b_h)
         # EVOLVE-BLOCK-END
 
         return h_out
@@ -60,12 +72,14 @@ def _make_kernel(config: helion.Config):
 # EVOLVE-BLOCK-START
 # Per-shape configs: (B, T, H, K, V) -> helion.Config
 SHAPE_CONFIGS: dict[tuple, helion.Config] = {
+    # Test shapes — block_sizes=[block_v] since only hl.register_block_size(dstate) is tunable
     (1, 64, 2, 64, 64): helion.Config(block_sizes=[64], num_warps=4, num_stages=1),
     (2, 128, 4, 64, 64): helion.Config(block_sizes=[64], num_warps=4, num_stages=1),
-    (1, 256, 4, 64, 128): helion.Config(block_sizes=[64], num_warps=4, num_stages=2),
-    (1, 64, 1, 64, 64): helion.Config(block_sizes=[64], num_warps=4, num_stages=2),
-    (2, 512, 3, 64, 64): helion.Config(block_sizes=[64], indexing="tensor_descriptor", num_warps=8, num_stages=2),
-    (2, 1024, 3, 64, 64): helion.Config(block_sizes=[64], indexing="tensor_descriptor", num_warps=8, num_stages=3),
+    (1, 256, 4, 64, 128): helion.Config(block_sizes=[64], num_warps=4, num_stages=1),
+    # Benchmark shapes
+    (1, 64, 1, 64, 64): helion.Config(block_sizes=[64], num_warps=4, num_stages=1),
+    (2, 512, 3, 64, 64): helion.Config(block_sizes=[64], num_warps=4, num_stages=1),
+    (2, 1024, 3, 64, 64): helion.Config(block_sizes=[64], num_warps=4, num_stages=1),
 }
 # EVOLVE-BLOCK-END
 
