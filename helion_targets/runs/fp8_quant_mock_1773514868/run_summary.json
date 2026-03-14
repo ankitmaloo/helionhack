@@ -1,0 +1,40 @@
+{
+  "problem": "fp8_quant",
+  "mode": "mock",
+  "generations": 1,
+  "alphaevolve_summary": {
+    "mode": "mock",
+    "model_name": "mock",
+    "generations": 1,
+    "seed_program_path": "mvp/tasks/astar_routing_target.py",
+    "total_candidates": 2,
+    "active_candidates": [
+      "cand_0000"
+    ],
+    "best_candidate_id": "cand_0000",
+    "best_aggregate_score": -32.16666666666667,
+    "top_prompts": [
+      {
+        "id": "prompt_001",
+        "mean_reward": 0.0,
+        "uses": 0,
+        "text": "Be conservative: target small, valid, high-confidence edits."
+      },
+      {
+        "id": "prompt_003",
+        "mean_reward": 0.0,
+        "uses": 0,
+        "text": "Focus on balancing efficiency and solution quality trade-offs."
+      },
+      {
+        "id": "prompt_004",
+        "mean_reward": 0.0,
+        "uses": 0,
+        "text": "Use previous failures as hard constraints to avoid repeating mistakes."
+      }
+    ],
+    "run_dir": "/Users/ankit/Documents/dev/hackathon/pytorchkernel/alphaevolve/runs/fp8_quant_mock_1773514868"
+  },
+  "telemetry_summary_path": "/Users/ankit/Documents/dev/hackathon/pytorchkernel/helion_targets/runs/fp8_quant_mock_1773514868/telemetry_summary.json",
+  "best_kernel_path": "/Users/ankit/Documents/dev/hackathon/pytorchkernel/helion_targets/runs/fp8_quant_mock_1773514868/best_kernel.py"
+}

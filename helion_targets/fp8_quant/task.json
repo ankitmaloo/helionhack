@@ -1,0 +1,14 @@
+{
+    "name": "optimize_fp8_quant",
+    "description": "Evolve a Helion kernel for per-token-group FP8 E4M3 quantization. Minimize benchmark runtime on B200 while passing all correctness tests.",
+    "seed_file": "seed.py",
+    "mutable_files": ["seed.py"],
+    "context_files": ["CONTEXT.md"],
+    "eval_command": "python3 $TASK_DIR/../eval_kernel.py {candidate_file} fp8_quant_py --config $TASK_DIR/../substrate.json",
+    "eval_mode": "command",
+    "eval_cwd": "..",
+    "metric_keys": ["mean_runtime_us", "min_runtime_us", "correctness", "compile_time_s", "test_time_s", "benchmark_time_s"],
+    "primary_metric": "mean_runtime_us",
+    "maximize": false,
+    "eval_timeout": 300
+}

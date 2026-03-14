@@ -1,0 +1,8 @@
+{
+    "substrate": "ssh",
+    "host": "46.243.144.128",
+    "user": "ubuntu",
+    "venv_activate": "source ~/helion_env/bin/activate",
+    "work_dir": "~/reference-kernels/problems/helion",
+    "timeout_s": 300
+}

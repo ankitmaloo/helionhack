@@ -1,0 +1,73 @@
+{
+  "problem_name": "fp8_quant",
+  "substrate_type": "ssh",
+  "elapsed_s": 783.8882558345795,
+  "total_generations": 3,
+  "total_candidates": 6,
+  "total_valid": 0,
+  "total_failed": 6,
+  "success_rate": 0.0,
+  "improvement_rate": 0.0,
+  "best_ever_score": -1.0,
+  "best_ever_runtime_us": Infinity,
+  "best_ever_generation": 0,
+  "best_ever_candidate_id": "",
+  "stagnation_counter": 0,
+  "score_history": [
+    -1.0,
+    -1.0,
+    -1.0
+  ],
+  "runtime_history_us": [
+    Infinity,
+    Infinity,
+    Infinity
+  ],
+  "per_generation": [
+    {
+      "generation": 1,
+      "timestamp": 1773517921.367559,
+      "wall_time_s": 240.23996305465698,
+      "candidates_attempted": 2,
+      "candidates_valid": 0,
+      "candidates_failed_compile": 2,
+      "candidates_failed_correctness": 0,
+      "candidates_failed_diff": 0,
+      "candidates_improved": 0,
+      "best_score": -1.0,
+      "best_runtime_us": Infinity,
+      "mean_eval_time_s": 0.0,
+      "population_size": 1
+    },
+    {
+      "generation": 2,
+      "timestamp": 1773518161.607619,
+      "wall_time_s": 240.10548186302185,
+      "candidates_attempted": 2,
+      "candidates_valid": 0,
+      "candidates_failed_compile": 2,
+      "candidates_failed_correctness": 0,
+      "candidates_failed_diff": 0,
+      "candidates_improved": 0,
+      "best_score": -1.0,
+      "best_runtime_us": Infinity,
+      "mean_eval_time_s": 0.0,
+      "population_size": 1
+    },
+    {
+      "generation": 3,
+      "timestamp": 1773518401.7131588,
+      "wall_time_s": 240.1332311630249,
+      "candidates_attempted": 2,
+      "candidates_valid": 0,
+      "candidates_failed_compile": 2,
+      "candidates_failed_correctness": 0,
+      "candidates_failed_diff": 0,
+      "candidates_improved": 0,
+      "best_score": -1.0,
+      "best_runtime_us": Infinity,
+      "mean_eval_time_s": 0.0,
+      "population_size": 1
+    }
+  ]
+}

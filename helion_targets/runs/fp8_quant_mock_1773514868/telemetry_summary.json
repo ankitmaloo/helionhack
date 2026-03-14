@@ -1,0 +1,39 @@
+{
+  "problem_name": "fp8_quant",
+  "substrate_type": "ssh",
+  "elapsed_s": 65.77776885032654,
+  "total_generations": 1,
+  "total_candidates": 1,
+  "total_valid": 0,
+  "total_failed": 1,
+  "success_rate": 0.0,
+  "improvement_rate": 0.0,
+  "best_ever_score": -1.0,
+  "best_ever_runtime_us": Infinity,
+  "best_ever_generation": 0,
+  "best_ever_candidate_id": "",
+  "stagnation_counter": 0,
+  "score_history": [
+    -1.0
+  ],
+  "runtime_history_us": [
+    Infinity
+  ],
+  "per_generation": [
+    {
+      "generation": 1,
+      "timestamp": 1773514933.888309,
+      "wall_time_s": 0.0023310184478759766,
+      "candidates_attempted": 1,
+      "candidates_valid": 0,
+      "candidates_failed_compile": 0,
+      "candidates_failed_correctness": 0,
+      "candidates_failed_diff": 1,
+      "candidates_improved": 0,
+      "best_score": -1.0,
+      "best_runtime_us": Infinity,
+      "mean_eval_time_s": 0.0,
+      "population_size": 1
+    }
+  ]
+}

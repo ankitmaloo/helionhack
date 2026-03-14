@@ -1,0 +1,2 @@
+{"type": "candidate_eval", "generation": 1, "ts": 1773514933.890323, "valid": false, "improved": false, "score": -1.0, "runtime_us": Infinity, "eval_time_s": 0.0, "failure_type": "diff", "candidate_id": "cand_0001"}
+{"type": "generation_end", "generation": 1, "ts": 1773514933.8906329, "wall_time_s": 0.0023310184478759766, "candidates_attempted": 1, "candidates_valid": 0, "candidates_improved": 0, "best_score": -1.0, "best_runtime_us": Infinity, "population_size": 1, "stagnation_counter": 0}

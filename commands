@@ -1,0 +1,40 @@
+It's running but no output yet (still in seed eval). Here are the commands you can
+   run directly in your terminal:
+
+  Set up environment:
+  cd /Users/ankit/Documents/dev/hackathon/pytorchkernel
+  export OPENAI_API_KEY=$(grep OPENAI_API_KEY .env | head -1 | cut -d'=' -f2 | tr -d
+   " '\"")
+  cd helion_targets
+
+  Run each problem (run these in separate terminal tabs):
+
+  # 1. fp8_quant (warm-up, unscored)
+  python3 run.py --problem fp8_quant --mode openai --generations 20
+  --parallel-candidates 3 --llm-concurrency 3 --slow-every 1
+
+  # 2. causal_conv1d (scored)
+  python3 run.py --problem causal_conv1d --mode openai --generations 30
+  --parallel-candidates 3 --llm-concurrency 3 --slow-every 1
+
+  # 3. gated_deltanet_chunk_fwd_h (scored)
+  python3 run.py --problem gated_deltanet_chunk_fwd_h --mode openai --generations 30
+   --parallel-candidates 3 --llm-concurrency 3 --slow-every 1
+
+  # 4. gated_deltanet_chunk_fwd_o (scored)
+  python3 run.py --problem gated_deltanet_chunk_fwd_o --mode openai --generations 30
+   --parallel-candidates 3 --llm-concurrency 3 --slow-every 1
+
+  # 5. gated_deltanet_recompute_w_u (scored)
+  python3 run.py --problem gated_deltanet_recompute_w_u --mode openai --generations
+  30 --parallel-candidates 3 --llm-concurrency 3 --slow-every 1
+
+  Key flags:
+  - --generations 30 — 30 evolution rounds (each produces 3 candidates)
+  - --parallel-candidates 3 — 3 mutations per generation
+  - --slow-every 1 — use gpt-5.4 for every call (no fast/slow split since you want
+  all gpt-5.4)
+  - --tui — add this for a live TUI dashboard
+
+  Best kernels saved to helion_targets/runs/<run_name>/best_kernel.py. Telemetry in
+  telemetry_summary.json.
