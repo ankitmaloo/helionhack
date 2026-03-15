@@ -6,6 +6,8 @@ import helion.language as hl
 
 
 CHUNK_SIZE = 64
+ACF_0 = "/opt/booster_pack/recompute_w_u_fwd_0.acf"
+ACF_1 = "/opt/booster_pack/recompute_w_u_fwd_1.acf"
 
 
 def _make_kernel(config: helion.Config):
@@ -62,8 +64,12 @@ SHAPE_CONFIGS = {
     (2, 128, 4, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=1),
     (1, 256, 4, 64, 128): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=2),
     (1, 64, 1, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=2),
-    (2, 512, 3, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=8, num_stages=2),
-    (2, 1024, 3, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=8, num_stages=3),
+    (2, 512, 3, 64, 64): helion.Config(
+        block_sizes=[64, 64], num_warps=8, num_stages=2, advanced_controls_file=ACF_0
+    ),
+    (2, 1024, 3, 64, 64): helion.Config(
+        block_sizes=[64, 64], num_warps=8, num_stages=3, advanced_controls_file=ACF_1
+    ),
 }
 
 

@@ -34,9 +34,10 @@ def _make_kernel(config: helion.Config):
             i_b = tile_b.id
             i_h = tile_h.id
             b_A = A[i_b, tile_t, i_h, :].to(acc_dtype)
-            beta_t = beta[i_b, tile_t, i_h].to(acc_dtype)
-            gate_t = (beta_t * torch.exp(g[i_b, tile_t, i_h].to(acc_dtype)))[:, None]
-            beta_t = beta_t[:, None]
+            beta_base = beta[i_b, tile_t, i_h].to(acc_dtype)
+            exp_g_t = torch.exp(g[i_b, tile_t, i_h].to(acc_dtype))
+            beta_t = beta_base[:, None]
+            gate_t = (beta_base * exp_g_t)[:, None]
 
             for tile_k in hl.tile(dk, block_size=block_k):
                 out_w[i_b, tile_t, i_h, tile_k] = hl.dot(
@@ -62,8 +63,8 @@ SHAPE_CONFIGS = {
     (2, 128, 4, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=1),
     (1, 256, 4, 64, 128): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=2),
     (1, 64, 1, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=2),
-    (2, 512, 3, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=8, num_stages=2),
-    (2, 1024, 3, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=8, num_stages=3),
+    (2, 512, 3, 64, 64): helion.Config(block_sizes=[32, 32], num_warps=8, num_stages=2),
+    (2, 1024, 3, 64, 64): helion.Config(block_sizes=[32, 32], num_warps=8, num_stages=3),
 }
 
 

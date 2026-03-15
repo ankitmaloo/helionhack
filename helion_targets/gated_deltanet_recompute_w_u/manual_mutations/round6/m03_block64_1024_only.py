@@ -62,7 +62,7 @@ SHAPE_CONFIGS = {
     (2, 128, 4, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=1),
     (1, 256, 4, 64, 128): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=2),
     (1, 64, 1, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=4, num_stages=2),
-    (2, 512, 3, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=8, num_stages=2),
+    (2, 512, 3, 64, 64): helion.Config(block_sizes=[32, 32], num_warps=8, num_stages=2),
     (2, 1024, 3, 64, 64): helion.Config(block_sizes=[64, 64], num_warps=8, num_stages=3),
 }
 
